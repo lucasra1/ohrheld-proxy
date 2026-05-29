@@ -1,0 +1,11 @@
+.git/
+.idea/
+__pycache__/
+*.py[cod]
+
+proxy-cert.pem
+proxy-key.pem
+proxy-log.jsonl
+*.jsonl
+
+.DS_Store
