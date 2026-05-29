@@ -18,7 +18,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: proxy
-          image: ghcr.io/base3-gmbh/hearables-proxy:0.1.0
+          image: ghcr.io/base3-gmbh/hearables-proxy:0.2.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

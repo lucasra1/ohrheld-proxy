@@ -21,6 +21,32 @@ docker push "$GHCR_IMAGE"
 
 Your GitHub token needs `write:packages` to push the image. If the package is private, your cluster also needs pull credentials.
 
+If the pod fails with `exec /usr/local/bin/python: exec format error`, the image was built for a different CPU architecture than the Kubernetes node. This commonly happens when building on Apple Silicon and deploying to `amd64` Linux nodes.
+
+Build and push an `amd64` image instead:
+
+```bash
+export GHCR_IMAGE=ghcr.io/OWNER/hearables-proxy:0.1.0
+
+docker buildx build \
+  --platform linux/amd64 \
+  -t "$GHCR_IMAGE" \
+  --push \
+  .
+```
+
+Or publish a multi-architecture image:
+
+```bash
+export GHCR_IMAGE=ghcr.io/OWNER/hearables-proxy:0.1.0
+
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t "$GHCR_IMAGE" \
+  --push \
+  .
+```
+
 ## TLS
 
 The container serves plain HTTP on port `8080`. Traefik terminates TLS for `ohrheld-proxy.base3.at` and routes traffic to the Kubernetes service on port `80`.
