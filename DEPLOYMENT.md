@@ -23,7 +23,19 @@ Your GitHub token needs `write:packages` to push the image. If the package is pr
 
 ## TLS
 
-The container serves plain HTTP on port `8080`. Terminate TLS at Traefik and route traffic to the Kubernetes service on port `80`.
+The container serves plain HTTP on port `8080`. Traefik terminates TLS for `ohrheld-proxy.base3.at` and routes traffic to the Kubernetes service on port `80`.
+
+The included Ingress uses:
+
+```yaml
+cert-manager.io/cluster-issuer: default
+```
+
+If your cluster uses a namespaced cert-manager `Issuer` instead of a `ClusterIssuer`, change that annotation to:
+
+```yaml
+cert-manager.io/issuer: default
+```
 
 ## Point the Manifests at Your Image
 

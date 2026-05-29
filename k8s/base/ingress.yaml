@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hearables-proxy
+  labels:
+    app.kubernetes.io/name: hearables-proxy
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - ohrheld-proxy.base3.at
+      secretName: ohrheld-proxy-base3-at-tls
+  rules:
+    - host: ohrheld-proxy.base3.at
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hearables-proxy
+                port:
+                  name: http
