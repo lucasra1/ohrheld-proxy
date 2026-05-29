@@ -59,19 +59,11 @@ If you already have an Argo CD GitOps repo, copy `k8s/base` there instead of cre
 
 ## Image Pull Secrets for Private GHCR Packages
 
-If your GHCR package is private:
+If your GHCR package is private, this base includes an `InfisicalSecret` that creates a Docker config secret named `ghcr-secret` from Infisical path `/github-container-registry`.
 
-```bash
-kubectl create secret docker-registry ghcr-pull-secret \
-  --docker-server=ghcr.io \
-  --docker-username=OWNER \
-  --docker-password="$GITHUB_TOKEN" \
-  --namespace YOUR_NAMESPACE
-```
-
-Then add this to `spec.template.spec` in the deployment:
+The deployment uses that generated secret as its image pull secret:
 
 ```yaml
 imagePullSecrets:
-  - name: ghcr-pull-secret
+  - name: ghcr-secret
 ```
